@@ -1,1 +1,1 @@
-## Quixo Bot
+# Quixo Bot
