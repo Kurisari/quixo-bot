@@ -25,15 +25,16 @@ class QuixoBot:
         # self.move_up(board, 2, 0)
         # self.move_right(board, 0, 0)
         # self.move_down(board, 0, 4)
-        self.move_right(board, 0, 3)
+        # self.move_right(board, 0, 3)
+        # self.move_right(board, 1, 0)
+        # self.move_left(board, 1, 4)
+        # self.move_left(board, 0, 3)
         self.move_right(board, 1, 0)
-        self.move_left(board, 1, 4)
-        self.move_left(board, 0, 3)
-        self.move_down(board, 2, 2)
     
     def move_right(self, board, row, col, end_col=4):
+        allowed_pieces = [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (4, 3)]
         piece = board[row][col]
-        if self.validate_move(board, row, col):
+        if (row, col) in allowed_pieces and self.validate_move(board, row, col):
             if piece == 0 or piece == self.symbol:
                 for i in range(col, end_col + 1):
                     board[row][i] = board[row][i + 1] if i != 4 else self.symbol
@@ -42,8 +43,9 @@ class QuixoBot:
             print("Invalid move")
     
     def move_left(self, board, row, col, end_col=0):
+        allowed_pieces = [(0, 1), (0, 2), (0, 3), (1, 4), (2, 4), (3, 4), (4, 4), (4, 1), (4, 2), (4, 3), (4, 4)]
         piece = board[row][col]
-        if self.validate_move(board, row, col):
+        if (row, col) in allowed_pieces and self.validate_move(board, row, col):
             if piece == 0 or piece == self.symbol:
                 for i in range(col, end_col - 1, -1):
                     board[row][i] = board[row][i - 1] if i != 0 else self.symbol
@@ -52,8 +54,9 @@ class QuixoBot:
             print("Invalid move")
     
     def move_up(self, board, row, col, end_row=0):
+        allowed_pieces = [(1, 0), (1, 4), (2, 0), (2, 4), (3, 0), (3, 4), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]
         piece = board[row][col]
-        if self.validate_move(board, row, col):
+        if (row, col) in allowed_pieces and self.validate_move(board, row, col):
             if piece == 0 or piece == self.symbol:
                 for i in range(row, end_row - 1, -1):
                     board[i][col] = board[i - 1][col] if i != 0 else self.symbol
@@ -62,8 +65,9 @@ class QuixoBot:
             print("Invalid move")
     
     def move_down(self, board, row, col, end_row=4):
+        allowed_pieces = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (1, 0), (1, 4), (2, 0), (2, 4), (3, 0), (3, 4)]
         piece = board[row][col]
-        if self.validate_move(board, row, col):
+        if (row, col) in allowed_pieces and self.validate_move(board, row, col):
             if piece == 0 or piece == self.symbol:
                 for i in range(row, end_row + 1):
                     board[i][col] = board[i + 1][col] if i != 4 else self.symbol
