@@ -1,3 +1,12 @@
+import os
+import sys
+
+script_dir = os.getcwd()
+func_dir = os.path.join(script_dir)
+sys.path.append(func_dir)
+
+from lib import quixo_lib as ql
+
 class QuixoBot:
     def __init__(self, symbol):
         pass
