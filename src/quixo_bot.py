@@ -16,47 +16,60 @@ class QuixoBot:
     def play_turn(self, board=None):
         if board is None:
             board = self.board
+        # self.move_right(board, 1, 0)
+        # self.move_right(board, 1, 0)
+        # self.move_left(board, 2, 4)
+        # self.move_left(board, 2, 4)
+        # self.move_left(board, 3, 4)
+        # self.move_right(board, 0, 0)
+        # self.move_up(board, 2, 0)
+        # self.move_right(board, 0, 0)
+        # self.move_down(board, 0, 4)
+        self.move_right(board, 0, 3)
         self.move_right(board, 1, 0)
-        self.move_right(board, 1, 0)
-        self.move_left(board, 2, 4)
-        self.move_left(board, 2, 4)
-        self.move_left(board, 3, 4)
-        self.move_right(board, 0, 0)
-        self.move_up(board, 2, 0)
-        self.move_right(board, 0, 0)
-        self.move_down(board, 0, 4)
+        self.move_left(board, 1, 4)
+        self.move_left(board, 0, 3)
+        self.move_down(board, 2, 2)
     
     def move_right(self, board, row, col, end_col=4):
         piece = board[row][col]
-        if piece == 0 or piece == self.symbol:
-            if piece == 0:
-                board[row] = board[row][col + 1:] + [self.symbol]
-            else:
-                board[row] = board[row][col + 1:] + [piece]
-        self.print_board()
+        if self.validate_move(board, row, col):
+            if piece == 0 or piece == self.symbol:
+                for i in range(col, end_col + 1):
+                    board[row][i] = board[row][i + 1] if i != 4 else self.symbol
+            self.print_board()
+        else:
+            print("Invalid move")
     
     def move_left(self, board, row, col, end_col=0):
         piece = board[row][col]
-        if piece == 0 or piece == self.symbol:
-            if piece == 0:
-                board[row] = [self.symbol] + board[row][:col]
-            else:
-                board[row] = [piece] + board[row][:col]
-        self.print_board()
+        if self.validate_move(board, row, col):
+            if piece == 0 or piece == self.symbol:
+                for i in range(col, end_col - 1, -1):
+                    board[row][i] = board[row][i - 1] if i != 0 else self.symbol
+            self.print_board()
+        else:
+            print("Invalid move")
     
     def move_up(self, board, row, col, end_row=0):
         piece = board[row][col]
-        if piece == 0 or piece == self.symbol:
-            for i in range(row, end_row - 1, -1):
-                board[i][col] = board[i - 1][col] if i != 0 else self.symbol
-        self.print_board()
+        if self.validate_move(board, row, col):
+            if piece == 0 or piece == self.symbol:
+                for i in range(row, end_row - 1, -1):
+                    board[i][col] = board[i - 1][col] if i != 0 else self.symbol
+            self.print_board()
+        else:
+            print("Invalid move")
     
     def move_down(self, board, row, col, end_row=4):
         piece = board[row][col]
-        if piece == 0 or piece == self.symbol:
-            for i in range(row, end_row + 1):
-                board[i][col] = board[i + 1][col] if i != 4 else self.symbol
-        self.print_board()
+        if self.validate_move(board, row, col):
+            if piece == 0 or piece == self.symbol:
+                for i in range(row, end_row + 1):
+                    board[i][col] = board[i + 1][col] if i != 4 else self.symbol
+            self.print_board()
+        else:
+            print("Invalid move")
     
     def print_board(self):
         headers = [""] + [str(i) for i in range(1, 6)]
@@ -65,6 +78,12 @@ class QuixoBot:
     
     def reset(self):
         pass
+    
+    def validate_move(self, board, row, col):
+        allowed_pieces = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (1, 0), (1, 4), (2, 0), (2, 4), (3, 0), (3, 4), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4)]
+        if (row, col) in allowed_pieces:
+            return True
+        return False
 
 prueba = QuixoBot(1)
 prueba.play_turn()
