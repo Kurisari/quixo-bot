@@ -16,20 +16,6 @@ class QuixoBot:
     def play_turn(self, board=None):
         if board is None:
             board = self.board
-        # self.move_right(board, 1, 0)
-        # self.move_right(board, 1, 0)
-        # self.move_left(board, 2, 4)
-        # self.move_left(board, 2, 4)
-        # self.move_left(board, 3, 4)
-        # self.move_right(board, 0, 0)
-        # self.move_up(board, 2, 0)
-        # self.move_right(board, 0, 0)
-        # self.move_down(board, 0, 4)
-        # self.move_right(board, 0, 3)
-        # self.move_right(board, 1, 0)
-        # self.move_left(board, 1, 4)
-        # self.move_left(board, 0, 3)
-        self.move_right(board, 1, 0)
     
     def move_right(self, board, row, col, end_col=4):
         allowed_pieces = [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (4, 3)]
