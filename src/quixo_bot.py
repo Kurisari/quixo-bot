@@ -30,7 +30,6 @@ class QuixoBot:
             if piece == 0 or piece == self.symbol:
                 for i in range(col, end_col + 1):
                     board[row][i] = board[row][i + 1] if i != 4 else self.symbol
-            self.print_board()
         else:
             print("Invalid move")
     
@@ -40,7 +39,6 @@ class QuixoBot:
             if piece == 0 or piece == self.symbol:
                 for i in range(col, end_col - 1, -1):
                     board[row][i] = board[row][i - 1] if i != 0 else self.symbol
-            self.print_board()
         else:
             print("Invalid move")
     
@@ -50,7 +48,6 @@ class QuixoBot:
             if piece == 0 or piece == self.symbol:
                 for i in range(row, end_row - 1, -1):
                     board[i][col] = board[i - 1][col] if i != 0 else self.symbol
-            self.print_board()
         else:
             print("Invalid move")
     
@@ -60,7 +57,6 @@ class QuixoBot:
             if piece == 0 or piece == self.symbol:
                 for i in range(row, end_row + 1):
                     board[i][col] = board[i + 1][col] if i != 4 else self.symbol
-            self.print_board()
         else:
             print("Invalid move")
     
