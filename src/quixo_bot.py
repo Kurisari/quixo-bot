@@ -67,8 +67,10 @@ class QuixoBot:
         rows = [[str(i + 1)] + ['O' if cell == -1 else 'X' if cell == 1 else ' ' for cell in row] for i, row in enumerate(board)]
         print(tabulate(rows, headers=headers, tablefmt="grid"))
     
-    def reset(self):
-        pass
+    def reset(self, symbol):
+        self.symbol = symbol
+        self.opponent_symbol = 1 if symbol == -1 else -1
+        self.board = [[0] * 5 for _ in range(5)]
 
     def is_winner(self, board, symbol):
         lines = []
@@ -90,11 +92,39 @@ class QuixoBot:
 
     def evaluate(self, board):
         if self.is_winner(board, self.symbol):
-            return 1
+            return 1000
         elif self.is_winner(board, self.opponent_symbol):
-            return -1
-        else:
-            return 0
+            return -1000
+        score = 0
+        lines = []
+        for i in range(5):
+            lines.append(board[i])
+            lines.append([board[j][i] for j in range(5)])
+        lines.append([board[i][i] for i in range(5)])
+        lines.append([board[i][4 - i] for i in range(5)])
+        for line in lines:
+            score += self.evaluate_line(line, self.symbol)
+            score -= self.evaluate_line(line, self.opponent_symbol)
+        center_positions = [(1, 1), (1, 2), (1, 3), (2, 1), (2, 2), (2, 3), (3, 1), (3, 2), (3, 3)]
+        for row, col in center_positions:
+            if board[row][col] == self.symbol:
+                score += 3
+            elif board[row][col] == self.opponent_symbol:
+                score -= 3
+        return score
+
+    def evaluate_line(self, line, symbol):
+        count = line.count(symbol)
+        empty = line.count(0)
+        if count == 5:
+            return 100
+        elif count == 4 and empty == 1:
+            return 50
+        elif count == 3 and empty == 2:
+            return 10
+        elif count == 2 and empty == 3:
+            return 5
+        return 0
 
     def minimax(self, board, depth, maximizing):
         if self.is_winner(board, self.symbol) or self.is_winner(board, self.opponent_symbol) or depth == 0 or self.is_full(board):
