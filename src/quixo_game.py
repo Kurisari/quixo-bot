@@ -20,13 +20,15 @@ class QuixoGame:
         while True:
             if turn % 2 == 0:
                 self.board = self.player1.play_turn(self.board)
+                self.print_board(self.board)
             else:
-                self.player2.play_turn(self.board)
+                self.board = self.player2.play_turn(self.board)
+                self.print_board(self.board)
             turn += 1
     
     def print_board(self, board):
         headers = [""] + [str(i) for i in range(1, 6)]
-        rows = [[str(i + 1)] + ['O' if cell == 1 else 'X' if cell == 2 else ' ' for cell in row] for i, row in enumerate(self.board)]
+        rows = [[str(i + 1)] + ['O' if cell == -1 else 'X' if cell == 1 else ' ' for cell in row] for i, row in enumerate(self.board)]
         print(tabulate(rows, headers=headers, tablefmt="grid"))
 
 class QuixoHuman:
@@ -78,5 +80,5 @@ class QuixoHuman:
             return True
         return False
 
-prueba = QuixoGame(qb.QuixoBot(1), QuixoHuman(-1))
+prueba = QuixoGame(qb.QuixoBot(1), qb.QuixoBot(-1))
 prueba.play_game()
