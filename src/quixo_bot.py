@@ -112,7 +112,7 @@ class QuixoBot:
     def play_turn(self, board):
         root = GameNode(board)
         tree = GameTree(root)
-        tree.build_tree(self, 3, True)  # Profundidad 3 para ejemplo, puede ajustarse
+        tree.build_tree(self, 2, True)
         alphabeta = AlphaBeta()
         best_node = alphabeta.alpha_beta_search(root)
         move = best_node.move if best_node else None
