@@ -9,6 +9,7 @@ sys.path.append(func_dir)
 
 import quixo_bot as qb
 import quixo2 as q2
+import quixo_random as qr
 class QuixoGame:
     
     def __init__(self, player1, player2):
@@ -122,5 +123,5 @@ class QuixoHuman:
             return True
         return False
 
-prueba = QuixoGame(qb.QuixoBot(1), qb.QuixoBot(-1))
+prueba = QuixoGame(qb.QuixoBot(1), qr.QuixoRandomBot(-1))
 prueba.play_game()
