@@ -8,9 +8,7 @@ func_dir = os.path.join(script_dir)
 sys.path.append(func_dir)
 
 import quixo_bot as qb
-import quixo2 as q2
 import quixo_random as qr
-import quixo_qlearning as ql
 
 class QuixoGame:
     
