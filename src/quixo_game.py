@@ -10,6 +10,8 @@ sys.path.append(func_dir)
 import quixo_bot as qb
 import quixo2 as q2
 import quixo_random as qr
+import quixo_qlearning as ql
+
 class QuixoGame:
     
     def __init__(self, player1, player2):
@@ -86,7 +88,6 @@ class QuixoHuman:
         self.symbol = symbol
     
     def play_turn(self, board):
-        self.print_board(board)
         print("Enter move: ")
         move = input()
         if move == "q":
@@ -100,6 +101,7 @@ class QuixoHuman:
             self.move_left(board, row, col)
         elif direction == 3:
             self.move_right(board, row, col)
+        return board
     
     def move_right(self, board, row, col):
         qb.QuixoBot.move_right(self, board, row, col)
@@ -123,5 +125,5 @@ class QuixoHuman:
             return True
         return False
 
-prueba = QuixoGame(qb.QuixoBot(1), qr.QuixoRandomBot(-1))
+prueba = QuixoGame(qb.QuixoBot(1), QuixoHuman(-1))
 prueba.play_game()
