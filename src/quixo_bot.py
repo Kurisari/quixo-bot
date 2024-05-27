@@ -16,13 +16,9 @@ class GameNode:
         return len(self.children) == 0
 
     def evaluate(self, bot_symbol, opponent_symbol):
-        lines = []
-        for i in range(5):
-            lines.append(self.board[i])
-            lines.append([self.board[j][i] for j in range(5)])
+        lines = [self.board[i] for i in range(5)] + [[self.board[j][i] for j in range(5)] for i in range(5)]
         lines.append([self.board[i][i] for i in range(5)])
         lines.append([self.board[i][4 - i] for i in range(5)])
-
         score = 0
         for line in lines:
             score += self.evaluate_line(line, bot_symbol)
@@ -67,7 +63,6 @@ class AlphaBeta:
         best_val = -infinity
         beta = infinity
         best_state = None
-
         for child in node.children:
             value = self.min_value(child, best_val, beta)
             if value > best_val:
@@ -174,10 +169,7 @@ class QuixoBot:
         self.board = [[0] * 5 for _ in range(5)]
 
     def is_winner(self, board, symbol):
-        lines = []
-        for i in range(5):
-            lines.append(board[i])
-            lines.append([board[j][i] for j in range(5)])
+        lines = [board[i] for i in range(5)] + [[board[j][i] for j in range(5)] for i in range(5)]
         lines.append([board[i][i] for i in range(5)])
         lines.append([board[i][4 - i] for i in range(5)])
         for line in lines:
@@ -194,8 +186,20 @@ class QuixoBot:
         for direction in ['right', 'left', 'up', 'down']:
             for row, col in allowed_positions:
                 if board[row][col] == 0 or board[row][col] == symbol:
-                    moves.append((direction, (row, col)))
+                    if self.is_valid_move(board, direction, row, col, symbol):
+                        moves.append((direction, (row, col)))
         return moves
+
+    def is_valid_move(self, board, direction, row, col, symbol):
+        if direction == 'right' and col < 4 and (board[row][col + 1] == 0 or board[row][col + 1] == symbol):
+            return True
+        if direction == 'left' and col > 0 and (board[row][col - 1] == 0 or board[row][col - 1] == symbol):
+            return True
+        if direction == 'up' and row > 0 and (board[row - 1][col] == 0 or board[row - 1][col] == symbol):
+            return True
+        if direction == 'down' and row < 4 and (board[row + 1][col] == 0 or board[row + 1][col] == symbol):
+            return True
+        return False
 
     def apply_move(self, board, move, symbol):
         new_board = copy.deepcopy(board)
