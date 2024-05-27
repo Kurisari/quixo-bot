@@ -1,13 +1,14 @@
 import os
 import sys
 from tabulate import tabulate
+import time
 
 script_dir = os.getcwd()
 func_dir = os.path.join(script_dir)
 sys.path.append(func_dir)
 
 import quixo_bot as qb
-
+import quixo2 as q2
 class QuixoGame:
     
     def __init__(self, player1, player2):
@@ -15,15 +16,56 @@ class QuixoGame:
         self.player2 = player2
         self.board = [[0] * 5 for _ in range(5)]
     
+    def check_winner(self, board):
+        # Check rows
+        for row in board:
+            if all(cell == 1 for cell in row):
+                return 1
+            elif all(cell == -1 for cell in row):
+                return -1
+        
+        # Check columns
+        for col in range(5):
+            if all(row[col] == 1 for row in board):
+                return 1
+            elif all(row[col] == -1 for row in board):
+                return -1
+        
+        # Check diagonals
+        if all(board[i][i] == 1 for i in range(5)):
+            return 1
+        elif all(board[i][i] == -1 for i in range(5)):
+            return -1
+        if all(board[i][4-i] == 1 for i in range(5)):
+            return 1
+        elif all(board[i][4-i] == -1 for i in range(5)):
+            return -1
+        
+        return 0
+
     def play_game(self):
         turn = 0
         while True:
             if turn % 2 == 0:
+                time1 = time.time()
                 self.board = self.player1.play_turn(self.board)
+                time2 = time.time()
+                print("Time taken: ", time2 - time1)
                 self.print_board(self.board)
+                winner = self.check_winner(self.board)
+                if winner != 0:
+                    print("Player", winner, "wins!")
+                    break
             else:
+                time1 = time.time()
                 self.board = self.player2.play_turn(self.board)
+                time2 = time.time()
+                print("Time taken: ", time2 - time1)
                 self.print_board(self.board)
+                winner = self.check_winner(self.board)
+                if winner != 0:
+                    print("Player", winner, "wins!")
+                    break
             turn += 1
     
     def print_board(self, board):
