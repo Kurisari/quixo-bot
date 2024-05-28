@@ -103,6 +103,7 @@ class QuixoBot:
         self.symbol = symbol
         self.opponent_symbol = 1 if symbol == -1 else -1
         self.board = [[0] * 5 for _ in range(5)]
+        self.name = "Kuri Bot"
 
     def play_turn(self, board):
         root = GameNode(board)
