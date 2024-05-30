@@ -112,7 +112,6 @@ class QuixoBot:
         alphabeta = AlphaBeta()
         best_node = alphabeta.alpha_beta_search(root)
         move = best_node.move if best_node else None
-        print(move)
         if move:
             direction, (row, col) = move
             if direction == 'right':

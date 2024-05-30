@@ -314,7 +314,8 @@ class QuixoReferee:
         rows = [[str(i + 1)] + ['O' if cell == -1 else 'X' if cell == 1 else ' ' for cell in row] for i, row in enumerate(board)]
         print(tabulate(rows, headers=headers, tablefmt="grid"))
 
-bot1 = qb.QuixoBot(-1)
-bot2 = qr.QuixoRandomBot(1)
+bot1 = qr.QuixoRandomBot(1)
+bot2 = qb.QuixoBot(-1)
+
 referee = QuixoReferee(bot1, bot2)
-referee.play_match(50, 100)
+referee.play_match(20, 100)
