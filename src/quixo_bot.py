@@ -21,22 +21,34 @@ class GameNode:
         lines.append([self.board[i][4 - i] for i in range(5)])
         score = 0
         for line in lines:
-            score += self.evaluate_line(line, bot_symbol)
-            score -= self.evaluate_line(line, opponent_symbol)
+            score += self.evaluate_line(line, bot_symbol, opponent_symbol)
         return score
 
     @staticmethod
-    def evaluate_line(line, symbol):
-        count = line.count(symbol)
-        empty = line.count(0)
-        if count == 5:
+    def evaluate_line(line, bot_symbol, opponent_symbol):
+        bot_count = line.count(bot_symbol)
+        opp_count = line.count(opponent_symbol)
+        empty_count = line.count(0)
+        if bot_count == 5:
             return 1000
-        elif count == 4 and empty == 1:
+        elif opp_count == 5:
+            return -1000
+        elif bot_count == 4 and empty_count == 1:
             return 50
-        elif count == 3 and empty == 2:
+        elif opp_count == 4 and empty_count == 1:
+            return -50
+        elif bot_count == 3 and empty_count == 2:
             return 10
-        elif count == 2 and empty == 3:
+        elif opp_count == 3 and empty_count == 2:
+            return -10
+        elif bot_count == 2 and empty_count == 3:
             return 5
+        elif opp_count == 2 and empty_count == 3:
+            return -5
+        elif bot_count == 1 and empty_count == 4:
+            return 1
+        elif opp_count == 1 and empty_count == 4:
+            return -1
         return 0
 
 class GameTree:
