@@ -1,3 +1,7 @@
+"""
+    Obtenido de: https://github.com/manuel-rdz/Quixo
+"""
+
 import copy
 import os
 import sys
