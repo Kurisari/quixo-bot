@@ -17,7 +17,6 @@ sys.path.append(func_dir)
 
 import quixo_bot as qb
 import quixo_random as qr
-import c as c
 
 class QuixoReferee:
     def __init__(self, player1, player2):
@@ -345,8 +344,7 @@ class QuixoReferee:
             print(f"\nTablero {idx}:")
             self.__print_board(board)
 
-# bot1 = qr.QuixoRandomBot(1)
-bot1 = c.QuixoBot(1)
+bot1 = qr.QuixoRandomBot(1)
 bot2 = qb.QuixoBot(-1)
 
 referee = QuixoReferee(bot1, bot2)
