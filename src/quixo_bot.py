@@ -13,7 +13,7 @@ class GameNode:
         self.children.append(child)
 
     def is_terminal(self):
-        return len(self.children) == 0
+        return self.value is not None or len(self.children) == 0
 
     def evaluate(self, bot_symbol, opponent_symbol):
         lines = [self.board[i] for i in range(5)] + [[self.board[j][i] for j in range(5)] for i in range(5)]
@@ -34,9 +34,9 @@ class GameNode:
         elif opp_count == 5:
             return -1000
         elif bot_count == 4 and empty_count == 1:
-            return 50
+            return 100
         elif opp_count == 4 and empty_count == 1:
-            return -50
+            return -100
         elif bot_count == 3 and empty_count == 2:
             return 10
         elif opp_count == 3 and empty_count == 2:
@@ -200,7 +200,23 @@ class QuixoBot:
                 if board[row][col] == 0 or board[row][col] == symbol:
                     if self.is_valid_move(board, direction, row, col, symbol):
                         moves.append((direction, (row, col)))
-        return moves
+        return self.prioritize_moves(moves, board, symbol)
+
+    def prioritize_moves(self, moves, board, symbol):
+        prioritized_moves = sorted(moves, key=lambda move: self.evaluate_move(move, board, symbol), reverse=True)
+        return prioritized_moves
+
+    def evaluate_move(self, move, board, symbol):
+        direction, (row, col) = move
+        center_distance = abs(2 - row) + abs(2 - col)
+        board_copy = copy.deepcopy(board)
+        self.apply_move(board_copy, move, symbol)
+        if self.check_two_in_a_row(board_copy, symbol):
+            return 100 - center_distance
+        opponent_winning = self.check_two_in_a_row(board_copy, self.opponent_symbol)
+        if opponent_winning:
+            return 200
+        return center_distance
 
     def is_valid_move(self, board, direction, row, col, symbol):
         if direction == 'right' and col < 4 and (board[row][col + 1] == 0 or board[row][col + 1] == symbol):
@@ -225,3 +241,12 @@ class QuixoBot:
         elif direction == 'down':
             self.move_down(new_board, row, col)
         return new_board
+
+    def check_two_in_a_row(self, board, symbol):
+        lines = [board[i] for i in range(5)] + [[board[j][i] for j in range(5)] for i in range(5)]
+        lines.append([board[i][i] for i in range(5)])
+        lines.append([board[i][4 - i] for i in range(5)])
+        for line in lines:
+            if line.count(symbol) == 2 and line.count(0) == 3:
+                return True
+        return False
